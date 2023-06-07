@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,6 +10,8 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
 
+  constructor(private router: Router) {}
+
   login() {
     const usersLocalStorage = localStorage.getItem('users');
     const users = usersLocalStorage ? JSON.parse(usersLocalStorage) : [];
@@ -17,7 +20,7 @@ export class LoginComponent {
 
     if (user) {
       console.log('Inicio de sesión exitoso');
-      // Aquí puedes redirigir al usuario a otra página
+      this.router.navigate(['/dashboard']);
     } else {
       console.log('Nombre de usuario o contraseña incorrectos');
     }
