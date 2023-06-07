@@ -20,6 +20,8 @@ export class LoginComponent {
 
     if (user) {
       console.log('Inicio de sesión exitoso');
+      const user_info = {'username': this.username, 'login_date': Date()}
+      sessionStorage.setItem('userinfo', JSON.stringify(user_info));
       this.router.navigate(['/dashboard']);
     } else {
       console.log('Nombre de usuario o contraseña incorrectos');
