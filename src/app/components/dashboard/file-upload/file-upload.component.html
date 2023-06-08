@@ -1,7 +1,7 @@
 <div class="input_file_container">
     <label for="file_input">File: </label>
     <input type="file" name="file_input" (change)="handleFileInput($event)" accept=".csv" />
-    <span>{{stateWithMaxDeaths}} es el estado con mas muertes: {{maxDeahts}}</span>
-    <span>{{stateWithMinDeaths}} es el estado con menos muertes: {{minDeahts}}</span>
+    <span>{{stateWithMaxDeaths}} es el estado con mas muertes: {{maxDeaths}}</span>
+    <span>{{stateWithMinDeaths}} es el estado con menos muertes: {{minDeaths}}</span>
     <app-chart [chartData]="chartData" [chartLabels]="labels"></app-chart>
 </div>

@@ -10,46 +10,44 @@ import { ServiceDataService } from 'src/app/services/service-data.service';
 export class FileUploadComponent {
   data: number[] = [];
   labels: string[] = [];
-  chartData!: { datasets: { data: number[] }[]; labels: string[] };
-  maxDeahts: number = 0;
-  minDeahts: number = 0;
-  stateWithMaxDeaths: string = '';
-  stateWithMinDeaths: string = '';
+  chartData!: { datasets: { data: number[]; }[]; labels: string[]; };
+  maxDeaths:number = 0;
+  minDeaths:number = 0;
+  stateWithMaxDeaths = '';
+  stateWithMinDeaths = '';
 
   constructor(private papa: Papa, private service: ServiceDataService) {}
 
   ngOnInit() {
-    this.proccesData();
+    this.processData();
   }
 
   handleFileInput(event: any) {
     const file = event.target.files[0];
     this.papa.parse(file, {
       complete: async (result: any) => {
-        const headers = result.data[0];
         const jsonData: any[] = [];
 
         for (let i = 1; i < result.data.length; i++) {
           const row = result.data[i];
           const obj: any = {};
 
-          for (let j = 0; j < headers.length; j++) {
-            obj[headers[j]] = row[j];
+          for (let j = 0; j < row.length; j++) {
+            obj[result.data[0][j]] = row[j];
           }
 
           jsonData.push(obj);
         }
 
         const dataTrans = this.transformCSVData(jsonData);
-        (await this.service.postData(dataTrans)).subscribe(
-          (response) => {
-            console.log(response);
-          },
-          (error) => {
-            console.error(error);
-          }
-        );
-        this.proccesData();
+        try {
+          const response = await (await this.service.postData(dataTrans)).toPromise();
+          console.log(response);
+        } catch (error) {
+          console.error(error);
+        }
+
+        this.processData();
       },
     });
   }
@@ -64,35 +62,13 @@ export class FileUploadComponent {
       const dates: any = {};
 
       Object.keys(line).forEach((key) => {
-        if (
-          key !== 'UID' &&
-          key !== 'iso2' &&
-          key !== 'iso3' &&
-          key !== 'FIPS' &&
-          key !== 'Admin2' &&
-          key !== 'Province_State' &&
-          key !== 'Country_Region' &&
-          key !== 'Lat' &&
-          key !== 'Long_' &&
-          key !== 'Combined_Key' &&
-          key !== 'Population'
-        ) {
+        if (!this.isExcludedKey(key)) {
           dates[key] = parseInt(line[key]);
         }
       });
-      console.log(line);
 
       const transformedLine = {
-        iso2: line.iso2,
-        iso3: line.iso3,
-        FIPS: line.FIPS,
-        Admin2: line.Admin2,
-        Province_State: line.Province_State,
-        Country_Region: line.Country_Region,
-        Lat: line.Lat,
-        Long_: line.Long_,
-        Combined_Key: line.Combined_Key,
-        Population: line.Population,
+        ...line,
         dates,
       };
 
@@ -102,7 +78,25 @@ export class FileUploadComponent {
     return transformedData;
   }
 
-  async proccesData() {
+  isExcludedKey(key: string): boolean {
+    const excludedKeys = [
+      'UID',
+      'iso2',
+      'iso3',
+      'FIPS',
+      'Admin2',
+      'Province_State',
+      'Country_Region',
+      'Lat',
+      'Long_',
+      'Combined_Key',
+      'Population'
+    ];
+
+    return excludedKeys.includes(key);
+  }
+
+  async processData() {
     try {
       const response = await (await this.service.getData()).toPromise();
       const data = response.data;
@@ -114,23 +108,13 @@ export class FileUploadComponent {
   }
 
   maxAndMinDeathsPerState() {
-    let maxDeaths = -Infinity;
-    let stateWithMaxDeaths = '';
-    let minDeaths = Infinity;
-    let stateWithMinDeaths = '';
-
     const maxDeathsIndex = this.data.indexOf(Math.max(...this.data));
-    stateWithMaxDeaths = this.labels[maxDeathsIndex];
-    maxDeaths = this.data[maxDeathsIndex];
+    this.stateWithMaxDeaths = this.labels[maxDeathsIndex];
+    this.maxDeaths = this.data[maxDeathsIndex];
 
     const minDeathsIndex = this.data.indexOf(Math.min(...this.data));
-    stateWithMinDeaths = this.labels[minDeathsIndex];
-    minDeaths = this.data[minDeathsIndex];
-
-    this.maxDeahts = maxDeaths;
-    this.minDeahts = minDeaths;
-    this.stateWithMaxDeaths = stateWithMaxDeaths;
-    this.stateWithMinDeaths = stateWithMinDeaths;
+    this.stateWithMinDeaths = this.labels[minDeathsIndex];
+    this.minDeaths = this.data[minDeathsIndex];
   }
 
   getAllDeathsAndStates(data: any) {
