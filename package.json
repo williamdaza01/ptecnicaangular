@@ -20,6 +20,7 @@
     "@angular/router": "^16.0.0",
     "axios": "^1.4.0",
     "chart.js": "^4.3.0",
+    "ng2-charts": "^4.1.1",
     "ngx-file-drop": "^15.0.0",
     "ngx-papaparse": "^7.0.0",
     "rxjs": "~7.8.0",

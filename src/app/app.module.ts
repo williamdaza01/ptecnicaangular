@@ -9,6 +9,8 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserInfoComponent } from './components/dashboard/user-info/user-info.component';
 import { FileUploadComponent } from './components/dashboard/file-upload/file-upload.component';
+import { ChartComponent } from './components/dashboard/chart/chart.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -17,8 +19,9 @@ import { FileUploadComponent } from './components/dashboard/file-upload/file-upl
     DashboardComponent,
     UserInfoComponent,
     FileUploadComponent,
+    ChartComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, NgChartsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
