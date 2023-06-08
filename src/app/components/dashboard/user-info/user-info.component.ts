@@ -3,13 +3,13 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-user-info',
   templateUrl: './user-info.component.html',
-  styleUrls: ['./user-info.component.scss']
+  styleUrls: ['./user-info.component.scss'],
 })
 export class UserInfoComponent {
   username: string = '';
   loginDate: Date | null = null;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     const user_info = sessionStorage.getItem('userinfo');
@@ -19,6 +19,5 @@ export class UserInfoComponent {
       this.username = info_obj.username;
       this.loginDate = new Date(info_obj.login_date);
     }
-    
   }
 }

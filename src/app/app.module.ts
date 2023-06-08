@@ -21,7 +21,13 @@ import { NgChartsModule } from 'ng2-charts';
     FileUploadComponent,
     ChartComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, NgChartsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    NgChartsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

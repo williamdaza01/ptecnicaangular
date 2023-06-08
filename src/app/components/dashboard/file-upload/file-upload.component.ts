@@ -10,9 +10,9 @@ import { ServiceDataService } from 'src/app/services/service-data.service';
 export class FileUploadComponent {
   data: number[] = [];
   labels: string[] = [];
-  chartData!: { datasets: { data: number[]; }[]; labels: string[]; };
-  maxDeaths:number = 0;
-  minDeaths:number = 0;
+  chartData!: { datasets: { data: number[] }[]; labels: string[] };
+  maxDeaths: number = 0;
+  minDeaths: number = 0;
   stateWithMaxDeaths = '';
   stateWithMinDeaths = '';
 
@@ -41,7 +41,9 @@ export class FileUploadComponent {
 
         const dataTrans = this.transformCSVData(jsonData);
         try {
-          const response = await (await this.service.postData(dataTrans)).toPromise();
+          const response = await (
+            await this.service.postData(dataTrans)
+          ).toPromise();
           console.log(response);
         } catch (error) {
           console.error(error);
@@ -90,7 +92,7 @@ export class FileUploadComponent {
       'Lat',
       'Long_',
       'Combined_Key',
-      'Population'
+      'Population',
     ];
 
     return excludedKeys.includes(key);
