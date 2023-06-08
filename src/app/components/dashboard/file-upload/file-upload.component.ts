@@ -10,7 +10,7 @@ import { ServiceDataService } from 'src/app/services/service-data.service';
 export class FileUploadComponent {
   data: number[] = [];
   labels: string[] = [];
-  chartData!: { datasets: { data: number[] }[], labels: string[] };
+  chartData!: { datasets: { data: number[] }[]; labels: string[] };
   maxDeahts: number = 0;
   minDeahts: number = 0;
   stateWithMaxDeaths: string = '';
@@ -106,34 +106,26 @@ export class FileUploadComponent {
     try {
       const response = await (await this.service.getData()).toPromise();
       const data = response.data;
-      this.maxAndMinDeathsPerState(data);
       this.getAllDeathsAndStates(data);
+      this.maxAndMinDeathsPerState();
     } catch (error) {
       console.error(error);
     }
   }
 
-  maxAndMinDeathsPerState(data: any) {
+  maxAndMinDeathsPerState() {
     let maxDeaths = -Infinity;
     let stateWithMaxDeaths = '';
     let minDeaths = Infinity;
     let stateWithMinDeaths = '';
 
-    Object.values(data).forEach((city: any) => {
-      const dates = Object.keys(city.dates);
-      const lastDate = dates[dates.length - 1];
-      const deaths = city.dates[lastDate];
+    const maxDeathsIndex = this.data.indexOf(Math.max(...this.data));
+    stateWithMaxDeaths = this.labels[maxDeathsIndex];
+    maxDeaths = this.data[maxDeathsIndex];
 
-      if (deaths > maxDeaths) {
-        maxDeaths = deaths;
-        stateWithMaxDeaths = city.Province_State;
-      }
-
-      if (deaths < minDeaths) {
-        minDeaths = deaths;
-        stateWithMinDeaths = city.Province_State;
-      }
-    });
+    const minDeathsIndex = this.data.indexOf(Math.min(...this.data));
+    stateWithMinDeaths = this.labels[minDeathsIndex];
+    minDeaths = this.data[minDeathsIndex];
 
     this.maxDeahts = maxDeaths;
     this.minDeahts = minDeaths;
@@ -144,12 +136,12 @@ export class FileUploadComponent {
   getAllDeathsAndStates(data: any) {
     this.labels = [];
     this.data = [];
-  
+
     Object.values(data).forEach((city: any) => {
       const dates = Object.keys(city.dates);
       const lastDate = dates[dates.length - 1];
       const deaths = city.dates[lastDate];
-  
+
       const existingStateIndex = this.labels.indexOf(city.Province_State);
       if (existingStateIndex !== -1) {
         this.data[existingStateIndex] += deaths;
@@ -158,7 +150,7 @@ export class FileUploadComponent {
         this.data.push(deaths);
       }
     });
-  
+
     this.chartData = {
       datasets: [
         {
@@ -168,5 +160,4 @@ export class FileUploadComponent {
       labels: this.labels,
     };
   }
-
 }
