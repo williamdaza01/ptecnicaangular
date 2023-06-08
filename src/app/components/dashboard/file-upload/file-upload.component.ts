@@ -8,7 +8,13 @@ import { ServiceDataService } from 'src/app/services/service-data.service';
   styleUrls: ['./file-upload.component.scss'],
 })
 export class FileUploadComponent {
-  data: any[] = [];
+  data: number[] = [];
+  labels: string[] = [];
+  chartData!: { datasets: { data: number[] }[], labels: string[] };
+  maxDeahts: number = 0;
+  minDeahts: number = 0;
+  stateWithMaxDeaths: string = '';
+  stateWithMinDeaths: string = '';
 
   constructor(private papa: Papa, private service: ServiceDataService) {}
 
@@ -43,6 +49,7 @@ export class FileUploadComponent {
             console.error(error);
           }
         );
+        this.proccesData();
       },
     });
   }
@@ -100,12 +107,13 @@ export class FileUploadComponent {
       const response = await (await this.service.getData()).toPromise();
       const data = response.data;
       this.maxAndMinDeathsPerState(data);
+      this.getAllDeathsAndStates(data);
     } catch (error) {
       console.error(error);
     }
   }
-  
-  maxAndMinDeathsPerState(data:any){
+
+  maxAndMinDeathsPerState(data: any) {
     let maxDeaths = -Infinity;
     let stateWithMaxDeaths = '';
     let minDeaths = Infinity;
@@ -127,9 +135,38 @@ export class FileUploadComponent {
       }
     });
 
-    console.log(`El estado con mayor acumulado de muertes es ${stateWithMaxDeaths} con un total de ${maxDeaths} muertes.`);
-    console.log(`El estado con menor acumulado de muertes es ${stateWithMinDeaths} con un total de ${minDeaths} muertes.`);
+    this.maxDeahts = maxDeaths;
+    this.minDeahts = minDeaths;
+    this.stateWithMaxDeaths = stateWithMaxDeaths;
+    this.stateWithMinDeaths = stateWithMinDeaths;
+  }
+
+  getAllDeathsAndStates(data: any) {
+    this.labels = [];
+    this.data = [];
   
+    Object.values(data).forEach((city: any) => {
+      const dates = Object.keys(city.dates);
+      const lastDate = dates[dates.length - 1];
+      const deaths = city.dates[lastDate];
+  
+      const existingStateIndex = this.labels.indexOf(city.Province_State);
+      if (existingStateIndex !== -1) {
+        this.data[existingStateIndex] += deaths;
+      } else {
+        this.labels.push(city.Province_State);
+        this.data.push(deaths);
+      }
+    });
+  
+    this.chartData = {
+      datasets: [
+        {
+          data: this.data,
+        },
+      ],
+      labels: this.labels,
+    };
   }
 
 }
