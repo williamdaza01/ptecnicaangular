@@ -8,16 +8,20 @@ import { FileUploadComponent } from './components/dashboard/file-upload/file-upl
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent, children: [
-    { path: 'user-info', component: UserInfoComponent },
-    { path: 'file-upload', component: FileUploadComponent }
-  ]},
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      { path: 'user-info', component: UserInfoComponent },
+      { path: 'file-upload', component: FileUploadComponent },
+    ],
+  },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login', pathMatch: 'full' }
+  { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.scss\" \"src/**/*.html\""
   },
   "private": true,
   "dependencies": {
@@ -18,6 +19,11 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
+    "axios": "^1.4.0",
+    "chart.js": "^4.3.0",
+    "ng2-charts": "^4.1.1",
+    "ngx-file-drop": "^15.0.0",
+    "ngx-papaparse": "^7.0.0",
     "rxjs": "~7.8.0",
     "sass-loader": "^13.3.1",
     "tslib": "^2.3.0",
@@ -34,6 +40,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "prettier": "^2.8.8",
     "typescript": "~5.0.2"
   }
 }

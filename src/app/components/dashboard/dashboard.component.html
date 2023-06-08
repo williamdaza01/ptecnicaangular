@@ -1,8 +1,15 @@
-<h1 class="dashboard_title">Dashboard</h1>
-<nav class="sidenav">
-  <ul class="sidenav_list">
-    <li class="sidenav_item"><a routerLink="user-info">Información del Usuario</a></li>
-    <li class="sidenav_item"><a routerLink="file-upload">Cargar Archivo</a></li>
-  </ul>
-</nav>
+<div class="dashboard_container">
+  <h1 class="dashboard_title">Dashboard</h1>
+  <nav class="sidenav">
+    <ul class="sidenav_list">
+      <li class="sidenav_item">
+        <a routerLink="user-info">Información del Usuario</a>
+      </li>
+      <li class="sidenav_item">
+        <a routerLink="file-upload">Cargar Archivo</a>
+      </li>
+    </ul>
+    <a class="signOut_link" (click)="signOut()">Cerrar Sesión</a>
+  </nav>
+</div>
 <router-outlet></router-outlet>
