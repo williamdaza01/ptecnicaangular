@@ -1,8 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json({ limit: "10000mb" }));
 
 app.post("/store", (req, res) => {

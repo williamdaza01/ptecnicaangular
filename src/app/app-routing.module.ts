@@ -12,6 +12,7 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     children: [
+      { path: '', redirectTo: 'user-info', pathMatch: 'full' },
       { path: 'user-info', component: UserInfoComponent },
       { path: 'file-upload', component: FileUploadComponent },
     ],
