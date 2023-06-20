@@ -2,6 +2,15 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.5.
 
+## Para este proyecto es seguir los siguientes paso:
+
+1. npm i
+2. ng serve
+3. Abrir otra terminal
+4. cd json-server
+5. npm i
+6. node json-server
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
